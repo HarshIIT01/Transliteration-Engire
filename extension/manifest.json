@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Transliteration Engine",
+  "version": "1.0.0",
+  "description": "Real-time Roman to Devanagari transliteration powered by a Seq2Seq neural network with Bahdanau attention.",
+  "permissions": [],
+  "host_permissions": [
+    "https://transliteration-engine.onrender.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Transliterate",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}

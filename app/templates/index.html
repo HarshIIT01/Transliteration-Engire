@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transliteration Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a2e;
+            --accent: #6c63ff;
+            --accent-glow: rgba(108, 99, 255, 0.3);
+            --text-primary: #e8e8f0;
+            --text-secondary: #8888a0;
+            --border: #2a2a3e;
+            --success: #4ade80;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 0 2rem;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6c63ff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: border-color 0.3s;
+        }
+
+        .card:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .input-area {
+            width: 100%;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            resize: vertical;
+            min-height: 70px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-area:focus {
+            border-color: var(--accent);
+        }
+
+        .output-area {
+            width: 100%;
+            min-height: 70px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+            font-family: 'Noto Sans Devanagari', 'Inter', sans-serif;
+            font-size: 1.25rem;
+            color: var(--success);
+            line-height: 1.6;
+            word-wrap: break-word;
+        }
+
+        .output-area.empty {
+            color: var(--text-secondary);
+            font-style: italic;
+            font-size: 1rem;
+        }
+
+        .stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .stat-value {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .examples {
+            margin-top: 1rem;
+        }
+
+        .examples h3 {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .example-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .chip {
+            padding: 0.45rem 0.9rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chip:hover {
+            border-color: var(--accent);
+            background: rgba(108, 99, 255, 0.1);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Transliteration Engine</h1>
+            <p>Type Roman Hindi — get instant Devanagari output</p>
+        </header>
+
+        <div class="card">
+            <label>Roman Input</label>
+            <textarea class="input-area" id="romanInput"
+                      placeholder="Type here... e.g., namaste doston"
+                      autofocus></textarea>
+        </div>
+
+        <div class="card">
+            <label>Devanagari Output</label>
+            <div class="output-area empty" id="devanagariOutput">
+                Output will appear here as you type...
+            </div>
+            <div class="stats">
+                <div class="stat">
+                    <span class="dot"></span>
+                    <span>Latency: <span class="stat-value" id="latencyValue">—</span></span>
+                </div>
+                <div class="stat">
+                    <span>Characters: <span class="stat-value" id="charCount">0</span></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="examples">
+            <h3>Try these examples</h3>
+            <div class="example-chips">
+                <div class="chip" onclick="tryExample(this)">namaste doston</div>
+                <div class="chip" onclick="tryExample(this)">mera naam harshit hai</div>
+                <div class="chip" onclick="tryExample(this)">bharat ek sundar desh hai</div>
+                <div class="chip" onclick="tryExample(this)">kya kar rahe ho</div>
+                <div class="chip" onclick="tryExample(this)">aaj mausam bahut accha hai</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Transliteration Engine v1.0 — Lightweight BiGRU Seq2Seq with Attention
+    </footer>
+
+    <script>
+        const input = document.getElementById('romanInput');
+        const output = document.getElementById('devanagariOutput');
+        const latencyEl = document.getElementById('latencyValue');
+        const charCountEl = document.getElementById('charCount');
+        let debounceTimer;
+
+        input.addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            charCountEl.textContent = input.value.length;
+
+            if (!input.value.trim()) {
+                output.textContent = 'Output will appear here as you type...';
+                output.classList.add('empty');
+                latencyEl.textContent = '—';
+                return;
+            }
+
+            debounceTimer = setTimeout(async () => {
+                try {
+                    const res = await fetch('/transliterate', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({text: input.value})
+                    });
+                    const data = await res.json();
+                    output.textContent = data.result;
+                    output.classList.remove('empty');
+                    latencyEl.textContent = data.latency_ms + 'ms';
+                } catch (err) {
+                    output.textContent = 'Error connecting to server';
+                    output.classList.add('empty');
+                }
+            }, 300);
+        });
+
+        function tryExample(el) {
+            input.value = el.textContent;
+            input.dispatchEvent(new Event('input'));
+        }
+    </script>
+</body>
+</html>

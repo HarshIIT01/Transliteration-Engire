@@ -1,0 +1,11 @@
+/translit
+venv/
+__pycache__/
+*.pyc
+.env
+
+transliteration_data/
+*.pt
+*.onnx
+*.zip
+*.tar

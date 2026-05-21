@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transliteration Engine</title>
+  <link rel="stylesheet" href="popup.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">अ</span>
+        <div class="logo-text">
+          <h1>Transliteration Engine</h1>
+          <span class="subtitle">Roman → Devanagari</span>
+        </div>
+      </div>
+      <div id="status-dot" class="status-dot offline" title="Checking server..."></div>
+    </header>
+
+    <!-- Input -->
+    <div class="input-section">
+      <label for="input-text">Type in Roman script</label>
+      <textarea id="input-text" placeholder="namaste doston" rows="3" spellcheck="false"></textarea>
+      <div class="input-footer">
+        <span id="char-count" class="char-count">0 chars</span>
+        <button id="clear-btn" class="btn-icon" title="Clear">✕</button>
+      </div>
+    </div>
+
+    <!-- Translate Button -->
+    <button id="transliterate-btn" class="btn-primary" disabled>
+      <span class="btn-text">Transliterate</span>
+      <span class="btn-loader" hidden></span>
+    </button>
+
+    <!-- Output -->
+    <div id="output-section" class="output-section" hidden>
+      <label>Devanagari Output</label>
+      <div id="output-text" class="output-text"></div>
+      <div class="output-footer">
+        <span id="latency" class="latency"></span>
+        <button id="copy-btn" class="btn-copy" title="Copy to clipboard">
+          <span id="copy-label">📋 Copy</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div id="history-section" class="history-section" hidden>
+      <div class="history-header">
+        <label>Recent</label>
+        <button id="clear-history" class="btn-icon" title="Clear history">🗑</button>
+      </div>
+      <div id="history-list" class="history-list"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span>Seq2Seq + Attention · 4M params · ~4ms</span>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
